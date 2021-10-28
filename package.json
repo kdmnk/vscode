@@ -1,8 +1,8 @@
 {
-  "name": "erlang-ls",
-  "displayName": "Erlang LS",
-  "version": "0.0.29",
-  "publisher": "erlang-ls",
+  "name": "wrangler-ls",
+  "displayName": "Wrangler LS",
+  "version": "0.0.1",
+  "publisher": "wrangler",
   "description": "The Visual Studio Code Extension for the Erlang Language Server",
   "categories": [
     "Programming Languages",
@@ -28,7 +28,7 @@
     "watch": "cd client && npm run watch",
     "postinstall": "cd client && npm install"
   },
-  "author": "erlang_ls",
+  "author": "wrangler",
   "license": "Apache-2.0",
   "engines": {
     "vscode": "^1.43.0"
@@ -39,7 +39,7 @@
   "contributes": {
     "configuration": {
       "type": "object",
-      "title": "Erlang LS",
+      "title": "Wrangler LS",
       "properties": {
         "erlang_ls.trace.server": {
           "scope": "window",
