@@ -1,6 +1,6 @@
 {
   "name": "wrangler-ls-client",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "wrangler",
   "repository": {
     "type": "git",

@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { workspace, ExtensionContext } from 'vscode';
+import { workspace, ExtensionContext, window as Window } from 'vscode';
 
 import {
     LanguageClient,
@@ -18,7 +18,28 @@ export async function get_client(context: ExtensionContext): Promise<LanguageCli
                 workspace.createFileSystemWatcher('**/rebar.config'),
                 workspace.createFileSystemWatcher('**/rebar.lock')
             ]
-        }
+        },
+        middleware: {
+			executeCommand: async (command, args, next) => {
+                //print command
+                Window.showInformationMessage(`Executing command: ${command}`);
+				const selected = await Window.showInputBox({placeHolder:"New name", validateInput: (value) => {
+                    if (value.length < 1) {
+                        return "Name must be at least 1 character long";
+                    }
+                    if (!/^[a-z][\_a-zA-Z0-9\@]*$/.test(value)) { //TODO quoted atoms
+                        return "Name must be a valid atom"; 
+                    }
+                    return null;
+                }});
+				if (selected === undefined) {
+					return next(command, args);
+				}
+				args = args.slice(0);
+				args.push(selected);
+				return next(command, args);
+			}
+		}
     };
 
     let serverPath = workspace.getConfiguration('erlang_ls').serverPath;
