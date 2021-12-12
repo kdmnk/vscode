@@ -21,23 +21,24 @@ export async function get_client(context: ExtensionContext): Promise<LanguageCli
         },
         middleware: {
 			executeCommand: async (command, args, next) => {
-                //print command
-                Window.showInformationMessage(`Executing command: ${command}`);
-				const selected = await Window.showInputBox({placeHolder:"New name", validateInput: (value) => {
-                    if (value.length < 1) {
-                        return "Name must be at least 1 character long";
+                if(command == "rename-fun" || command == "rename-mod" || command == "extract-fun") {
+                    const selected = await Window.showInputBox({placeHolder:"New name", validateInput: (value) => {
+                        if (value.length < 1) {
+                            return "Name must be at least 1 character long";
+                        }
+                        if (!/^[a-z][\_a-zA-Z0-9\@]*$/.test(value)) { //TODO quoted atoms
+                            return "Name must be a valid atom"; 
+                        }
+                        return null;
+                    }});
+                    if (selected === undefined) {
+                        return next(command, args);
                     }
-                    if (!/^[a-z][\_a-zA-Z0-9\@]*$/.test(value)) { //TODO quoted atoms
-                        return "Name must be a valid atom"; 
-                    }
-                    return null;
-                }});
-				if (selected === undefined) {
-					return next(command, args);
-				}
-				args = args.slice(0);
-				args.push(selected);
-				return next(command, args);
+                    args = args.slice(0);
+                    args.push(selected);
+                    
+                }
+                return next(command, args);
 			}
 		}
     };
