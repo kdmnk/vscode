@@ -87,8 +87,8 @@ export async function get_client(context: ExtensionContext): Promise<LanguageCli
     };
 
     return new LanguageClient(
-        'erlang_ls',
-        'Erlang LS',
+        'wrangler_ls',
+        'Wrangler LS',
         serverOptions,
         clientOptions
     );

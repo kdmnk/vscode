@@ -41,7 +41,7 @@
       "type": "object",
       "title": "Wrangler LS",
       "properties": {
-        "erlang_ls.trace.server": {
+        "wrangler_ls.trace.server": {
           "scope": "window",
           "type": "string",
           "enum": [
@@ -52,19 +52,19 @@
           "default": "off",
           "description": "Traces the communication between VS Code and the Erlang language server."
         },
-        "erlang_ls.serverPath": {
+        "wrangler_ls.serverPath": {
           "scope": "window",
           "type": "string",
           "default": "",
-          "description": "Override the default path of the erlang_ls executable with a custom one."
+          "description": "Override the default path of the wrangler_ls executable with a custom one."
         },
-        "erlang_ls.logPath": {
+        "wrangler_ls.logPath": {
           "scope": "window",
           "type": "string",
           "default": "",
-          "description": "Override the default directory erlang_ls logs to."
+          "description": "Override the default directory wrangler_ls logs to."
         },
-        "erlang_ls.logLevel": {
+        "wrangler_ls.logLevel": {
           "scope": "window",
           "enum": [
             "none",
@@ -123,5 +123,9 @@
     "mocha": "^8.3.2",
     "typescript": "^4.2.3",
     "vsce": "^1.95.0"
+  },
+  "dependencies": {
+    "lru-cache": "^6.0.0",
+    "minimatch": "^3.0.4"
   }
 }
