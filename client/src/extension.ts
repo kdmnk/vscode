@@ -7,13 +7,10 @@ import {
 } from 'vscode-languageclient/node';
 
 import { get_client } from './client';
-import { registerDebugAdapterDescriptorFactory } from './debugger';
 
 let client: LanguageClient;
 
 export async function activate(context: ExtensionContext) {
-
-    context.subscriptions.push(registerDebugAdapterDescriptorFactory(context));
 
     client = await get_client(context),
     client.start();
