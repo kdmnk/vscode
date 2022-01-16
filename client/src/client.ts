@@ -64,16 +64,21 @@ export async function get_client(context: ExtensionContext): Promise<LanguageCli
 		}
     };
 
-    //let serverPath = workspace.getConfiguration('wrangler_ls').serverPath;
-    //if (serverPath === "") {
-        let serverPath = context.asAbsolutePath(
+    let serverPath = workspace.getConfiguration('wrangler_ls').serverPath;
+    if (serverPath === "") {
+        serverPath = context.asAbsolutePath(
             path.join('erlang_ls', '_build', 'default', 'bin', 'erlang_ls')
         );
-    //};
+    };
 
     let logLevel = workspace.getConfiguration('wrangler_ls').logLevel;
 
-    let serverArgs = [ serverPath, "--transport", "stdio", "--log-level", "info" ];
+    let serverArgs = [ serverPath, "--transport", "stdio", "--log-level", logLevel]
+    
+    let wranglerPath = workspace.getConfiguration('wrangler_ls').wranglerPath;
+    if(wranglerPath !== "") {
+        serverArgs.push("--wrangler-dir", wranglerPath);
+    }
 
     let logPath = workspace.getConfiguration('wrangler_ls').logPath;
     if (logPath !== "") {

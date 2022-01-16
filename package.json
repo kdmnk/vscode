@@ -58,6 +58,12 @@
           "default": "",
           "description": "Override the default path of the wrangler_ls executable with a custom one."
         },
+        "wrangler_ls.wranglerPath": {
+          "scope": "window",
+          "type": "string",
+          "default": "",
+          "description": "Wrangler executable's path."
+        },
         "wrangler_ls.logPath": {
           "scope": "window",
           "type": "string",
