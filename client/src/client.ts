@@ -11,7 +11,7 @@ import {
 let client: LanguageClient;
 
 let commandsAddAtom:Array<string> = ["rename-fun", "rename-mod", "extract-fun", "copy-mod"];
-let commandsAddVar:Array<string> = ["generalise-fun"];
+let commandsAddVar:Array<string> = ["generalise-fun", "new-var"];
 
 export async function get_client(context: ExtensionContext): Promise<LanguageClient> {
     let clientOptions: LanguageClientOptions = {
