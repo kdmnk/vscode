@@ -12,6 +12,7 @@ let client: LanguageClient;
 
 let commandsAddAtom:Array<string> = ["rename-fun", "rename-mod", "extract-fun", "copy-mod"];
 let commandsAddVar:Array<string> = ["generalise-fun", "new-var"];
+let commandsAddFilePath:Array<string> = ["move-fun"];
 
 export async function get_client(context: ExtensionContext): Promise<LanguageClient> {
     let clientOptions: LanguageClientOptions = {
@@ -56,8 +57,15 @@ export async function get_client(context: ExtensionContext): Promise<LanguageCli
                         return next(command, args);
                     }
                     args = args.slice(0);
-                    args.push(selected);
-                    
+                    args.push(selected);   
+                }
+                if(commandsAddFilePath.includes(commandName)) {
+                    const selected = await Window.showOpenDialog({canSelectFiles: true, canSelectFolders: false, canSelectMany: false});
+                    if (selected === undefined) {
+                        return next(command, args);
+                    }
+                    args = args.slice(0);
+                    args.push(selected[0].fsPath);
                 }
                 return next(command, args);
 			}
