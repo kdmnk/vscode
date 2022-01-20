@@ -10,7 +10,7 @@ import {
 
 let client: LanguageClient;
 
-let commandsAddAtom:Array<string> = ["rename-fun", "rename-mod", "extract-fun", "copy-mod"];
+let commandsAddAtom:Array<string> = ["rename-fun", "rename-mod", "extract-fun", "copy-mod", "new-macro"];
 let commandsAddVar:Array<string> = ["generalise-fun", "new-var"];
 let commandsAddFilePath:Array<string> = ["move-fun"];
 
