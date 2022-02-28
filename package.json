@@ -58,12 +58,19 @@
           "default": "",
           "description": "Override the default path of the wrangler_ls executable with a custom one."
         },
+        "wrangler_ls.wranglerEnabled": {
+          "scope": "window",
+          "type": "boolean",
+          "default": false,
+          "description": "Enable/disable the Wrangler refactoring tool."
+        },
         "wrangler_ls.wranglerPath": {
           "scope": "window",
           "type": "string",
           "default": "",
           "description": "Wrangler executable's path."
         },
+        
         "wrangler_ls.logPath": {
           "scope": "window",
           "type": "string",
