@@ -70,6 +70,18 @@
           "default": "",
           "description": "Override the default directory erlang_ls logs to."
         },
+        "erlang_ls.wranglerEnabled": {
+          "scope": "window",
+          "type": "boolean",
+          "default": false,
+          "description": "Enable/disable the Wrangler refactoring tool."
+        },
+        "erlang_ls.wranglerPath": {
+          "scope": "window",
+          "type": "string",
+          "default": "",
+          "description": "Wrangler executable's path (ebin folder)."
+        },
         "erlang_ls.logLevel": {
           "scope": "window",
           "enum": [

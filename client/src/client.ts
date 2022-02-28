@@ -11,6 +11,10 @@ import {
 
 let client: LanguageClient;
 
+let commandsAddAtom:Array<string> = ["rename-fun", "rename-mod", "extract-fun", "copy-mod", "new-macro"];
+let commandsAddVar:Array<string> = ["generalise-fun", "new-var"];
+let commandsAddFilePath:Array<string> = ["move-fun"];
+
 export async function get_client(context: ExtensionContext): Promise<LanguageClient> {
     let clientOptions: LanguageClientOptions = {
         documentSelector: [{ scheme: 'file', language: 'erlang' }],
@@ -19,7 +23,54 @@ export async function get_client(context: ExtensionContext): Promise<LanguageCli
                 workspace.createFileSystemWatcher('**/rebar.config'),
                 workspace.createFileSystemWatcher('**/rebar.lock')
             ]
-        }
+        },
+        middleware: {
+			executeCommand: async (command, args, next) => {
+                let commandName : string = command.split(':')[1];
+                if(commandsAddAtom.includes(commandName)) {
+                    const selected = await window.showInputBox({placeHolder:"New name", validateInput: (value) => {
+                        if (value.length < 1) {
+                            return "Name must be at least 1 character long";
+                        }
+                        if (!/^[a-z][\_a-zA-Z0-9\@]*$/.test(value)) { //TODO quoted atoms
+                            return "Name must be a valid atom"; 
+                        }
+                        return null;
+                    }});
+                    if (selected === undefined) {
+                        return next(command, args);
+                    }
+                    args = args.slice(0);
+                    args.push(selected);
+                    
+                }
+                if(commandsAddVar.includes(commandName)) {
+                    const selected = await window.showInputBox({placeHolder:"New name", validateInput: (value) => {
+                        if (value.length < 1) {
+                            return "Name must be at least 1 character long";
+                        }
+                        if (!/^[A-Z][\_a-zA-Z0-9\@]*$/.test(value)) { //TODO check
+                            return "Name must be a valid variable name"; 
+                        }
+                        return null;
+                    }});
+                    if (selected === undefined) {
+                        return next(command, args);
+                    }
+                    args = args.slice(0);
+                    args.push(selected);   
+                }
+                if(commandsAddFilePath.includes(commandName)) {
+                    const selected = await window.showOpenDialog({canSelectFiles: true, canSelectFolders: false, canSelectMany: false});
+                    if (selected === undefined) {
+                        return next(command, args);
+                    }
+                    args = args.slice(0);
+                    args.push(selected[0].fsPath);
+                }
+                return next(command, args);
+			}
+		}
     };
 
     let serverPath = workspace.getConfiguration('erlang_ls').serverPath;
@@ -36,6 +87,14 @@ export async function get_client(context: ExtensionContext): Promise<LanguageCli
     let logPath = workspace.getConfiguration('erlang_ls').logPath;
     if (logPath !== "") {
         serverArgs.push("--log-dir", logPath);
+    }
+
+    //Wrangler related configuration
+    let wranglerEnabled = workspace.getConfiguration('elang_ls').wranglerEnabled;
+    serverArgs.push("--wrangler-enabled", wranglerEnabled);
+    let wranglerPath = workspace.getConfiguration('wrangler_ls').wranglerPath;
+    if(wranglerPath !== "") {
+        serverArgs.push("--wrangler-dir", wranglerPath);
     }
 
     let serverOptions: ServerOptions = {
